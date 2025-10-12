@@ -583,17 +583,170 @@ struct GameEditView: View {
 
 // Main App
 
-@main
-struct ProBubbleBoPlingApp: App {
-    @StateObject var appData = AppData()
-    
-    var body: some Scene {
-        WindowGroup {
-            NavigationStack {
-                HomeView()
-                    .environmentObject(appData)
+extension LoadingView {
+    func checkNotificationAuthorization() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                isNotif = true
+            case .denied:
+                if canAskAgain() {
+                    isNotif = true
+                }
+                sendConfigRequest()
+            case .authorized, .provisional, .ephemeral:
+                sendConfigRequest()
+            @unknown default:
+                sendConfigRequest()
             }
-            .preferredColorScheme(.dark)
+        }
+    }
+    
+    func canAskAgain() -> Bool {
+        if let lastDenied = UserDefaults.standard.object(forKey: lastDeniedKey) as? Date {
+            let threeDaysAgo = Calendar.current.date(byAdding: .day, value: -3, to: Date())!
+            return lastDenied < threeDaysAgo
+        }
+        return true
+    }
+    
+    func sendConfigRequest() {
+            let configNoMoreRequestsKey = "config_no_more_requests"
+            if UserDefaults.standard.bool(forKey: configNoMoreRequestsKey) {
+                print("Config requests are disabled by flag, exiting sendConfigRequest")
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                    UserDefaults.standard.synchronize()
+                    finishLoadingWithoutWebview()
+                }
+                return
+            }
+            
+            guard let conversionDataJson = UserDefaults.standard.data(forKey: "conversion_data") else {
+                print("Conversion data not found in UserDefaults")
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                    UserDefaults.standard.synchronize()
+                    finishLoadingWithoutWebview()
+                }
+                return
+            }
+            
+            guard let conversionData = try? JSONSerialization.jsonObject(with: conversionDataJson) as? [String: Any] else {
+                print("Failed to deserialize conversion data")
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                    UserDefaults.standard.synchronize()
+                    finishLoadingWithoutWebview()
+                }
+                return
+            }
+            
+            let requestBody = conversionData
+            
+            guard JSONSerialization.isValidJSONObject(requestBody) else {
+                print("Conversion data is not a valid JSON object")
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                    UserDefaults.standard.synchronize()
+                    finishLoadingWithoutWebview()
+                }
+                return
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+                let url = URL(string: "https://probubblebopling.com/config.php")!
+                var request = URLRequest(url: url)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpBody = jsonData
+                
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        print("Request error: \(error)")
+                        DispatchQueue.main.async {
+                            UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                            UserDefaults.standard.synchronize()
+                            finishLoadingWithoutWebview()
+                        }
+                        return
+                    }
+                    
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        print("Invalid response")
+                        DispatchQueue.main.async {
+                            UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                            UserDefaults.standard.synchronize()
+                            finishLoadingWithoutWebview()
+                        }
+                        return
+                    }
+                    
+                    guard (200...299).contains(httpResponse.statusCode) else {
+                        print("Server returned status code \(httpResponse.statusCode)")
+                        DispatchQueue.main.async {
+                            UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                            UserDefaults.standard.synchronize()
+                            finishLoadingWithoutWebview()
+                        }
+                        return
+                    }
+                    
+                    if let data = data {
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                                print("Config response JSON: \(json)")
+                                DispatchQueue.main.async {
+                                    handleConfigResponse(json)
+                                }
+                            }
+                        } catch {
+                            print("Failed to parse response JSON: \(error)")
+                            DispatchQueue.main.async {
+                                UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                                UserDefaults.standard.synchronize()
+                                finishLoadingWithoutWebview()
+                            }
+                        }
+                    }
+                }
+                
+                task.resume()
+                
+            } catch {
+                print("Failed to serialize request body: \(error)")
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+                    UserDefaults.standard.synchronize()
+                    finishLoadingWithoutWebview()
+                }
+            }
+        }
+    
+    func handleConfigResponse(_ jsonResponse: [String: Any]) {
+        if let ok = jsonResponse["ok"] as? Bool, ok,
+           let url = jsonResponse["url"] as? String,
+           let expires = jsonResponse["expires"] as? TimeInterval {
+            UserDefaults.standard.set(url, forKey: configUrlKey)
+            UserDefaults.standard.set(expires, forKey: configExpiresKey)
+            UserDefaults.standard.removeObject(forKey: configNoMoreRequestsKey)
+            UserDefaults.standard.synchronize()
+            
+            self.url = URLModel(urlString: url)
+            print("Config saved: url = \(url), expires = \(expires)")
+            
+        } else {
+            UserDefaults.standard.set(true, forKey: configNoMoreRequestsKey)
+            UserDefaults.standard.synchronize()
+            print("No valid config or error received, further requests disabled")
+            finishLoadingWithoutWebview()
+        }
+    }
+
+    func finishLoadingWithoutWebview() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isMain = true
         }
     }
 }

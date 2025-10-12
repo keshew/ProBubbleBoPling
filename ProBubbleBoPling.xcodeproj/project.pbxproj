@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		86CDCBD92E9B85E9007A10AB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 86CDCBD82E9B85E9007A10AB /* FirebaseCore */; };
+		86CDCBDB2E9B85E9007A10AB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 86CDCBDA2E9B85E9007A10AB /* FirebaseMessaging */; };
+		86CDCBDE2E9B8601007A10AB /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 86CDCBDD2E9B8601007A10AB /* AppsFlyerLib */; };
+		86CDCBE52E9B888E007A10AB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86CDCBE42E9B888E007A10AB /* GoogleService-Info.plist */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8F0A5E0A2E8C39AB00D9D970 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		86CDCBDF2E9B8631007A10AB /* ProBubbleBoPling-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ProBubbleBoPling-Info.plist"; sourceTree = "<group>"; };
+		86CDCBE42E9B888E007A10AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F0A5DFB2E8C39A900D9D970 /* ProBubbleBoPling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProBubbleBoPling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0A5E092E8C39AB00D9D970 /* ProBubbleBoPlingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProBubbleBoPlingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0A5E132E8C39AB00D9D970 /* ProBubbleBoPlingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProBubbleBoPlingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +61,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86CDCBDB2E9B85E9007A10AB /* FirebaseMessaging in Frameworks */,
+				86CDCBD92E9B85E9007A10AB /* FirebaseCore in Frameworks */,
+				86CDCBDE2E9B8601007A10AB /* AppsFlyerLib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +87,8 @@
 		8F0A5DF22E8C39A900D9D970 = {
 			isa = PBXGroup;
 			children = (
+				86CDCBDF2E9B8631007A10AB /* ProBubbleBoPling-Info.plist */,
+				86CDCBE42E9B888E007A10AB /* GoogleService-Info.plist */,
 				8F0A5DFD2E8C39A900D9D970 /* Pro Bubble BoPling */,
 				8F0A5E0C2E8C39AB00D9D970 /* Pro Bubble BoPlingTests */,
 				8F0A5E162E8C39AB00D9D970 /* Pro Bubble BoPlingUITests */,
@@ -112,6 +126,9 @@
 			);
 			name = ProBubbleBoPling;
 			packageProductDependencies = (
+				86CDCBD82E9B85E9007A10AB /* FirebaseCore */,
+				86CDCBDA2E9B85E9007A10AB /* FirebaseMessaging */,
+				86CDCBDD2E9B8601007A10AB /* AppsFlyerLib */,
 			);
 			productName = "Pro Bubble BoPling";
 			productReference = 8F0A5DFB2E8C39A900D9D970 /* ProBubbleBoPling.app */;
@@ -195,6 +212,10 @@
 			);
 			mainGroup = 8F0A5DF22E8C39A900D9D970;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				86CDCBD72E9B85E9007A10AB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				86CDCBDC2E9B8601007A10AB /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8F0A5DFC2E8C39A900D9D970 /* Products */;
 			projectDirPath = "";
@@ -212,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86CDCBE52E9B888E007A10AB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +415,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ProBubbleBoPling-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pro Bubble BoPling";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Pro Bubble BoPling needs camera access to record videos of your bowling sessions for performance analysis.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -409,7 +432,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -433,6 +456,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ProBubbleBoPling-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pro Bubble BoPling";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Pro Bubble BoPling needs camera access to record videos of your bowling sessions for performance analysis.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -449,7 +473,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -589,6 +613,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		86CDCBD72E9B85E9007A10AB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.4.0;
+			};
+		};
+		86CDCBDC2E9B8601007A10AB /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.17.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		86CDCBD82E9B85E9007A10AB /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86CDCBD72E9B85E9007A10AB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		86CDCBDA2E9B85E9007A10AB /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86CDCBD72E9B85E9007A10AB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		86CDCBDD2E9B8601007A10AB /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86CDCBDC2E9B8601007A10AB /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8F0A5DF32E8C39A900D9D970 /* Project object */;
 }
