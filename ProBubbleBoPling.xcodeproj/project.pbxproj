@@ -11,9 +11,18 @@
 		86CDCBDB2E9B85E9007A10AB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 86CDCBDA2E9B85E9007A10AB /* FirebaseMessaging */; };
 		86CDCBDE2E9B8601007A10AB /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 86CDCBDD2E9B8601007A10AB /* AppsFlyerLib */; };
 		86CDCBE52E9B888E007A10AB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86CDCBE42E9B888E007A10AB /* GoogleService-Info.plist */; };
+		86F9F42F2EA390F100E6C5D2 /* NotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 86F9F4282EA390F100E6C5D2 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		86F9F4372EA3912000E6C5D2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 86F9F4362EA3912000E6C5D2 /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		86F9F42D2EA390F100E6C5D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8F0A5DF32E8C39A900D9D970 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 86F9F4272EA390F100E6C5D2;
+			remoteInfo = NotificationService;
+		};
 		8F0A5E0A2E8C39AB00D9D970 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8F0A5DF32E8C39A900D9D970 /* Project object */;
@@ -30,15 +39,48 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		86F9F4302EA390F100E6C5D2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				86F9F42F2EA390F100E6C5D2 /* NotificationService.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		86CDCBDF2E9B8631007A10AB /* ProBubbleBoPling-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ProBubbleBoPling-Info.plist"; sourceTree = "<group>"; };
 		86CDCBE42E9B888E007A10AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		86F9F4282EA390F100E6C5D2 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0A5DFB2E8C39A900D9D970 /* ProBubbleBoPling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProBubbleBoPling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0A5E092E8C39AB00D9D970 /* ProBubbleBoPlingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProBubbleBoPlingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0A5E132E8C39AB00D9D970 /* ProBubbleBoPlingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProBubbleBoPlingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		86F9F4332EA390F100E6C5D2 /* Exceptions for "NotificationService" folder in "NotificationService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 86F9F4272EA390F100E6C5D2 /* NotificationService */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		86F9F4292EA390F100E6C5D2 /* NotificationService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				86F9F4332EA390F100E6C5D2 /* Exceptions for "NotificationService" folder in "NotificationService" target */,
+			);
+			path = NotificationService;
+			sourceTree = "<group>";
+		};
 		8F0A5DFD2E8C39A900D9D970 /* Pro Bubble BoPling */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Pro Bubble BoPling";
@@ -57,6 +99,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		86F9F4252EA390F100E6C5D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86F9F4372EA3912000E6C5D2 /* FirebaseMessaging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8F0A5DF82E8C39A900D9D970 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,6 +134,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		86F9F4352EA3912000E6C5D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8F0A5DF22E8C39A900D9D970 = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +149,8 @@
 				8F0A5DFD2E8C39A900D9D970 /* Pro Bubble BoPling */,
 				8F0A5E0C2E8C39AB00D9D970 /* Pro Bubble BoPlingTests */,
 				8F0A5E162E8C39AB00D9D970 /* Pro Bubble BoPlingUITests */,
+				86F9F4292EA390F100E6C5D2 /* NotificationService */,
+				86F9F4352EA3912000E6C5D2 /* Frameworks */,
 				8F0A5DFC2E8C39A900D9D970 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,6 +161,7 @@
 				8F0A5DFB2E8C39A900D9D970 /* ProBubbleBoPling.app */,
 				8F0A5E092E8C39AB00D9D970 /* ProBubbleBoPlingTests.xctest */,
 				8F0A5E132E8C39AB00D9D970 /* ProBubbleBoPlingUITests.xctest */,
+				86F9F4282EA390F100E6C5D2 /* NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,6 +169,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		86F9F4272EA390F100E6C5D2 /* NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86F9F4342EA390F100E6C5D2 /* Build configuration list for PBXNativeTarget "NotificationService" */;
+			buildPhases = (
+				86F9F4242EA390F100E6C5D2 /* Sources */,
+				86F9F4252EA390F100E6C5D2 /* Frameworks */,
+				86F9F4262EA390F100E6C5D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				86F9F4292EA390F100E6C5D2 /* NotificationService */,
+			);
+			name = NotificationService;
+			packageProductDependencies = (
+				86F9F4362EA3912000E6C5D2 /* FirebaseMessaging */,
+			);
+			productName = NotificationService;
+			productReference = 86F9F4282EA390F100E6C5D2 /* NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		8F0A5DFA2E8C39A900D9D970 /* ProBubbleBoPling */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8F0A5E1D2E8C39AB00D9D970 /* Build configuration list for PBXNativeTarget "ProBubbleBoPling" */;
@@ -116,10 +199,12 @@
 				8F0A5DF72E8C39A900D9D970 /* Sources */,
 				8F0A5DF82E8C39A900D9D970 /* Frameworks */,
 				8F0A5DF92E8C39A900D9D970 /* Resources */,
+				86F9F4302EA390F100E6C5D2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				86F9F42E2EA390F100E6C5D2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8F0A5DFD2E8C39A900D9D970 /* Pro Bubble BoPling */,
@@ -187,9 +272,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					86F9F4272EA390F100E6C5D2 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					8F0A5DFA2E8C39A900D9D970 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -224,11 +312,19 @@
 				8F0A5DFA2E8C39A900D9D970 /* ProBubbleBoPling */,
 				8F0A5E082E8C39AA00D9D970 /* ProBubbleBoPlingTests */,
 				8F0A5E122E8C39AB00D9D970 /* ProBubbleBoPlingUITests */,
+				86F9F4272EA390F100E6C5D2 /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		86F9F4262EA390F100E6C5D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8F0A5DF92E8C39A900D9D970 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -254,6 +350,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		86F9F4242EA390F100E6C5D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8F0A5DF72E8C39A900D9D970 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -278,6 +381,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		86F9F42E2EA390F100E6C5D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 86F9F4272EA390F100E6C5D2 /* NotificationService */;
+			targetProxy = 86F9F42D2EA390F100E6C5D2 /* PBXContainerItemProxy */;
+		};
 		8F0A5E0B2E8C39AB00D9D970 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8F0A5DFA2E8C39A900D9D970 /* ProBubbleBoPling */;
@@ -291,6 +399,77 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		86F9F4312EA390F100E6C5D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K8HD46K773;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling.NotificationServices;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = probubblebonotificationservice;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		86F9F4322EA390F100E6C5D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K8HD46K773;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling.NotificationServices;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = probubblebonotificationservice;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		8F0A5E1B2E8C39AB00D9D970 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -432,7 +611,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -473,7 +652,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bubblebopling.ProBubbleBoPling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -576,6 +755,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		86F9F4342EA390F100E6C5D2 /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86F9F4312EA390F100E6C5D2 /* Debug */,
+				86F9F4322EA390F100E6C5D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8F0A5DF62E8C39A900D9D970 /* Build configuration list for PBXProject "ProBubbleBoPling" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -648,6 +836,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 86CDCBDC2E9B8601007A10AB /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
 			productName = AppsFlyerLib;
+		};
+		86F9F4362EA3912000E6C5D2 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86CDCBD72E9B85E9007A10AB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

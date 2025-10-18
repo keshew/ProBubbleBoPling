@@ -36,21 +36,35 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
 
         let userInfo = response.notification.request.content.userInfo
 
-        if let data = userInfo["data"] as? [String: Any],
-           let urlString = data["url"] as? String,
-           !urlString.isEmpty {
-            NotificationCenter.default.post(name: .openUrlFromNotification,
-                                            object: nil,
-                                            userInfo: ["url": urlString])
+        var urlString: String?
+
+        if let url = userInfo["url"] as? String {
+            urlString = url
+        } else if let data = userInfo["data"] as? [String: Any],
+                  let url = data["url"] as? String {
+            urlString = url
         }
+
+        if let urlString = urlString, !urlString.isEmpty {
+            print("URL STRING: \(urlString)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                NotificationCenter.default.post(name: .openUrlFromNotification,
+                                                object: nil,
+                                                userInfo: ["url": urlString])
+            }
+        } else {
+            print("URL not found or empty")
+        }
+
         completionHandler()
     }
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        UNUserNotificationCenter.current().delegate = self
+        UIApplication.shared.registerForRemoteNotifications()
         Messaging.messaging().delegate = self
-        
         AppsFlyerLib.shared().appleAppID = "6753350433"
         AppsFlyerLib.shared().appsFlyerDevKey = "PYArJEd5iZbgcJtpYyyovb"
         AppsFlyerLib.shared().delegate = self
@@ -58,7 +72,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
         AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 60)
         NotificationCenter.default.addObserver(self, selector: #selector(dnsajkdnasda),
                                                name: UIApplication.didBecomeActiveNotification, object: nil)
-        
         return true
     }
     
@@ -75,6 +88,10 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
         } else {
             UserDefaults.standard.set("null", forKey: "fcmToken")
         }
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error)")
     }
     
     private func idfaSave() {
@@ -94,7 +111,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
     }
     
     func onConversionDataFail(_ error: Error) {
-        NotificationCenter.default.post(name: .datraRecieved, object: nil)
+
     }
     
     func onConversionDataSuccess(_ conversionData: [AnyHashable: Any]) {
@@ -109,6 +126,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
             print("Failed to serialize conversionData: \(error)")
         }
         
+        if let status = conversionData["af_status"] as? String {
+            let isOrganic = (status == "Organic")
+            UserDefaults.standard.set(isOrganic, forKey: "is_organic_conversion")
+        } else {
+            UserDefaults.standard.set(false, forKey: "is_organic_conversion")
+        }
+        
+        NotificationCenter.default.post(name: .datraRecieved, object: nil, userInfo: conversionData)
+        
         if let status = conversionData["af_status"] as? String, status == "Organic" {
             if !didRequestConversionDataAgain {
                 didRequestConversionDataAgain = true
@@ -117,13 +143,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, AppsFlyerLibDelegate, Messag
                     do {
                         let jsonData = try JSONSerialization.data(withJSONObject: conversionData, options: [])
                         UserDefaults.standard.set(jsonData, forKey: "conversion_data")
-                        NotificationCenter.default.post(name: .datraRecieved, object: nil, userInfo: conversionData)
                     } catch {
                         print("Failed to serialize conversionData: \(error)")
                     }
                 }
             } else {
-                print("We have orgianic(")
+                print("We have organic conversion")
             }
         }
     }

@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct URLModel: Identifiable, Equatable {
@@ -6,7 +7,8 @@ struct URLModel: Identifiable, Equatable {
 }
 
 struct LoadingView: View {
-    @StateObject var appData = AppData()
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var hasCheckedAuthorization = false
     @State  var url: URLModel? = nil
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -20,6 +22,7 @@ struct LoadingView: View {
     @State  var isRequestingConfig = false
     @StateObject  var networkMonitor = NetworkMonitor.shared
     @State var isInet = false
+    @State private var hasHandledConversion = false
     
     var isPortrait: Bool {
         verticalSizeClass == .regular && horizontalSizeClass == .compact
@@ -28,6 +31,7 @@ struct LoadingView: View {
     var isLandscape: Bool {
         verticalSizeClass == .compact && horizontalSizeClass == .regular
     }
+    @State var urlFromNotification: String? = nil
     
     var body: some View {
         VStack {
@@ -46,7 +50,6 @@ struct LoadingView: View {
                             
                             Text("LOADING...")
                                 .font(.custom("BlackHanSans-Regular", size: 24))
-                                .outlineText(color: Color(red: 136/255, green: 0/255, blue: 74/255), width: 0.7)
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 40)
@@ -54,7 +57,7 @@ struct LoadingView: View {
                             ProgressView()
                         }
                     }
-                    .padding(.vertical, 80)
+                    .padding(.vertical, 60)
                 }
             } else {
                 ZStack {
@@ -78,20 +81,63 @@ struct LoadingView: View {
                 }
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                isInet = networkMonitor.isDisconnected
+        .onReceive(networkMonitor.$isDisconnected) { disconnected in
+            if disconnected {
+                isInet = true
+            } else {
             }
         }
         .fullScreenCover(item: $url) { item in
             Detail(urlString: item.urlString)
-                .environmentObject(appData)
+                .ignoresSafeArea(.keyboard)
+                .onReceive(NotificationCenter.default.publisher(for: .openUrlFromNotification)) { notification in
+                    if let userInfo = notification.userInfo,
+                       let url = userInfo["url"] as? String {
+                        urlFromNotification = url
+                    }
+                }
+                .fullScreenCover(isPresented: Binding<Bool>(
+                    get: { urlFromNotification != nil },
+                    set: { newValue in if !newValue { urlFromNotification = nil } }
+                )) {
+                    if let urlToOpen = urlFromNotification {
+                        Detail(urlString: urlToOpen)
+                    } else {
+                    }
+                }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openUrlFromNotification)) { notification in
+            if let userInfo = notification.userInfo,
+               let url = userInfo["url"] as? String {
+                urlFromNotification = url
+            }
+        }
+        .fullScreenCover(isPresented: Binding<Bool>(
+            get: { urlFromNotification != nil },
+            set: { newValue in if !newValue { urlFromNotification = nil } }
+        )) {
+            if let urlToOpen = urlFromNotification {
+                Detail(urlString: urlToOpen)
+            } else {
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .datraRecieved)) { notification in
             DispatchQueue.main.async {
-                checkNotificationAuthorization()
+                guard !isInet else { return }
+                if !hasHandledConversion {
+                    let isOrganic = UserDefaults.standard.bool(forKey: "is_organic_conversion")
+                    if isOrganic {
+                        isMain = true
+                    } else {
+                        checkNotificationAuthorization()
+                    }
+                    hasHandledConversion = true
+                } else {
+                    print("Conversion event ignored due to recent handling")
+                }
             }
         }
+        
         .onReceive(NotificationCenter.default.publisher(for: .notificationPermissionResult)) { notification in
             sendConfigRequest()
         }
@@ -100,22 +146,19 @@ struct LoadingView: View {
         }
         .fullScreenCover(isPresented: $isMain) {
             HomeView()
-                .environmentObject(appData)
+                .environmentObject(AppData())
         }
         .fullScreenCover(isPresented: $isInet) {
-            if UserDefaults.standard.string(forKey: configUrlKey) != nil {
-                NoInternet()
-            } else {
-                HomeView()
-                    .environmentObject(appData)
-            }
+            NoInternet()
         }
     }
 }
 
 #Preview {
     LoadingView()
+        .environmentObject(AppData())
 }
+
 
 import Network
 import Combine

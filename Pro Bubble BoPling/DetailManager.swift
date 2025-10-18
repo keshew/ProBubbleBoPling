@@ -6,15 +6,15 @@ private var asdqw: String = {
     WKWebView().value(forKey: "userAgent") as? String ?? ""
 }()
 
-class CreateDetail: UIViewController, WKNavigationDelegate {
+class CreateDetail: UIViewController, WKNavigationDelegate, WKUIDelegate {
     var czxasd: WKWebView!
     var newPopupWindow: WKWebView?
+    private var lastRedirectURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
-    
     
     func showControls() async {
         let content = UserDefaults.standard.string(forKey: "config_url") ?? ""
@@ -23,25 +23,80 @@ class CreateDetail: UIViewController, WKNavigationDelegate {
             loadCookie()
             
             await MainActor.run {
-                self.czxasd = WKWebView(frame: self.view.frame)
+                let webConfiguration = WKWebViewConfiguration()
+                webConfiguration.mediaTypesRequiringUserActionForPlayback = []
+                webConfiguration.allowsInlineMediaPlayback = true
+                let source: String = """
+                var meta = document.createElement('meta');
+                meta.name = 'viewport';
+                meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+                document.getElementsByTagName('head')[0].appendChild(meta);
+                """
+                let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+                webConfiguration.userContentController.addUserScript(script)
+                
+                self.czxasd = WKWebView(frame: self.view.frame, configuration: webConfiguration)
                 self.czxasd.customUserAgent = asdqw
                 self.czxasd.navigationDelegate = self
+                self.czxasd.uiDelegate = self
+                
+                self.czxasd.scrollView.isScrollEnabled = true
+                self.czxasd.scrollView.pinchGestureRecognizer?.isEnabled = false
+                self.czxasd.scrollView.keyboardDismissMode = .interactive
+                self.czxasd.scrollView.minimumZoomScale = 1.0
+                self.czxasd.scrollView.maximumZoomScale = 1.0
+                self.czxasd.allowsBackForwardNavigationGestures = true
+                
+                self.view.addSubview(self.czxasd)
+                self.czxasd.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    self.czxasd.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                    self.czxasd.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                    self.czxasd.topAnchor.constraint(equalTo: self.view.topAnchor),
+                    self.czxasd.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+                ])
                 
                 self.loadInfo(with: url)
-                
             }
         }
     }
     
-    
     func loadInfo(with url: URL) {
         czxasd.load(URLRequest(url: url))
-        czxasd.allowsBackForwardNavigationGestures = true
-        czxasd.uiDelegate = self
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         saveCookie()
+    }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        let nsError = error as NSError
+        if nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorHTTPTooManyRedirects {
+            if let url = lastRedirectURL {
+                webView.load(URLRequest(url: url))
+                return
+            }
+        }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let url = navigationAction.request.url {
+            lastRedirectURL = url
+            
+            let deepLinkSchemes = ["paytmmp", "phonepe", "bankid"]
+            if let scheme = url.scheme?.lowercased(), deepLinkSchemes.contains(scheme) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                    if webView.canGoBack {
+                        webView.goBack()
+                    }
+                }
+                decisionHandler(.cancel)
+                return
+            }
+        }
+        decisionHandler(.allow)
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse,
@@ -50,31 +105,31 @@ class CreateDetail: UIViewController, WKNavigationDelegate {
             let status = response.statusCode
             
             if (300...399).contains(status) {
-                print("Redirect status, allowing navigation")
-            }  else if status == 200 {
-                
+                decisionHandler(.allow)
+                return
+            } else if status == 200 {
                 if webView.superview == nil {
                     let whiteBG = UIView(frame: view.frame)
                     whiteBG.tag = 11
                     view.addSubview(whiteBG)
-                    view.addSubview(self.czxasd)
+                    view.addSubview(webView)
                     
-                    self.czxasd.translatesAutoresizingMaskIntoConstraints = false
+                    webView.translatesAutoresizingMaskIntoConstraints = false
                     NSLayoutConstraint.activate([
-                        self.czxasd.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                        self.czxasd.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                        self.czxasd.topAnchor.constraint(equalTo: view.topAnchor),
-                        self.czxasd.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                        webView.topAnchor.constraint(equalTo: view.topAnchor),
+                        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                     ])
-                    
                 }
-            }
-            else if status >= 400 {
-                print("Ошибка Сервер вернул ошибку (\(status)).")
+                decisionHandler(.allow)
+                return
+            } else if status >= 400 {
+                decisionHandler(.cancel)
+                return
             }
         }
         decisionHandler(.allow)
-        
     }
     
     func loadCookie() {
@@ -108,32 +163,20 @@ class CreateDetail: UIViewController, WKNavigationDelegate {
             }
         }
     }
-}
-
-import SwiftUI
-@preconcurrency import WebKit
-
-extension CreateDetail: WKUIDelegate {
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        newPopupWindow = WKWebView(frame: view.bounds, configuration: configuration)
-        newPopupWindow!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        newPopupWindow!.navigationDelegate = self
-        newPopupWindow?.uiDelegate = self
-        view.addSubview(newPopupWindow!)
-        return newPopupWindow!
-    }
     
-    func webViewDidClose(_ webView: WKWebView) {
-        webView.removeFromSuperview()
-        newPopupWindow = nil
+    @available(iOS 15.0, *)
+    func webView(_ webView: WKWebView, requestMediaCapturePermissionFor origin: WKSecurityOrigin,
+                 initiatedByFrame frame: WKFrameInfo, type: WKMediaCaptureType,
+                 decisionHandler: @escaping (WKPermissionDecision) -> Void) {
+        DispatchQueue.main.async {
+            decisionHandler(.grant)
+        }
     }
 }
-
-import SwiftUI
 
 struct Detail: UIViewControllerRepresentable {
     var urlString: String
-
+    
     func makeUIViewController(context: Context) -> CreateDetail {
         let viewController = CreateDetail()
         UserDefaults.standard.set(urlString, forKey: "config_url")
@@ -142,6 +185,21 @@ struct Detail: UIViewControllerRepresentable {
         }
         return viewController
     }
-
+    
     func updateUIViewController(_ uiViewController: CreateDetail, context: Context) {}
+}
+
+extension CreateDetail {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration,
+                 for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil || !(navigationAction.targetFrame?.isMainFrame ?? false) {
+            webView.load(navigationAction.request)
+        }
+        return nil
+    }
+    
+    func webViewDidClose(_ webView: WKWebView) {
+        webView.removeFromSuperview()
+        newPopupWindow = nil
+    }
 }
