@@ -40,7 +40,7 @@ struct LoadingView: View {
                     Image("BGforNotifications")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 50) {
                         Spacer()
@@ -57,14 +57,14 @@ struct LoadingView: View {
                             ProgressView()
                         }
                     }
-                    .padding(.vertical, 60)
+                    .padding(.vertical, 20)
                 }
             } else {
                 ZStack {
                     Image("BGforNotificationsLandscape")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 30) {
                         Spacer()
@@ -77,7 +77,7 @@ struct LoadingView: View {
                         
                         ProgressView()
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 10)
                 }
             }
         }
@@ -127,9 +127,9 @@ struct LoadingView: View {
                 if !hasHandledConversion {
                     let isOrganic = UserDefaults.standard.bool(forKey: "is_organic_conversion")
                     if isOrganic {
-                        isMain = true
+//                        isMain = true
                     } else {
-                        checkNotificationAuthorization()
+//                        checkNotificationAuthorization()
                     }
                     hasHandledConversion = true
                 } else {
