@@ -20,7 +20,7 @@ struct NoInternet: View {
                     Image("BGforNotifications")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 50) {
                         Spacer()
@@ -42,14 +42,14 @@ struct NoInternet: View {
                         
                     
                     }
-                    .padding(.vertical, 30)
+                    .padding(.vertical, 10)
                 }
             } else {
                 ZStack {
                     Image("BGforNotificationsLandscape")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 30) {
                         Spacer()

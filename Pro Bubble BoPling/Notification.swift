@@ -23,7 +23,7 @@ struct NotificationView: View {
                     Image("BGforNotifications")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 50) {
                         Spacer()
@@ -66,14 +66,14 @@ struct NotificationView: View {
                             }
                         }
                     }
-                    .padding(.vertical, 60)
+                    .padding(.vertical, 20)
                 }
             } else {
                 ZStack {
                     Image("BGforNotificationsLandscape")
                         .resizable()
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                     
                     VStack(spacing: 30) {
                         Spacer()
@@ -116,7 +116,7 @@ struct NotificationView: View {
                             }
                         }
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 10)
                 }
             }
         }
